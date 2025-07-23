@@ -22,9 +22,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * faces the -x axis
  */
 public class FaceUv {
-	private String materialInstance;
-	private double[] uv;
-	private double[] uvSize;
+        private String materialInstance;
+        private double[] uv;
+        private double[] uvSize;
+        private Integer uvRotation;
 
 	@JsonProperty("material_instance")
 	public String getMaterialInstance() {
@@ -59,8 +60,18 @@ public class FaceUv {
 		return uvSize;
 	}
 
-	@JsonProperty("uv_size")
-	public void setUvSize(double[] value) {
-		this.uvSize = value;
-	}
+        @JsonProperty("uv_size")
+        public void setUvSize(double[] value) {
+                this.uvSize = value;
+        }
+
+        @JsonProperty("uv_rotation")
+        public Integer getUvRotation() {
+                return uvRotation;
+        }
+
+        @JsonProperty("uv_rotation")
+        public void setUvRotation(Integer value) {
+                this.uvRotation = value;
+        }
 }
