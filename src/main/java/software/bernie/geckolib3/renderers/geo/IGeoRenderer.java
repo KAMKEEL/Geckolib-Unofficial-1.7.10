@@ -40,6 +40,8 @@ public interface IGeoRenderer<T> {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.enableBlend();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enablePolygonOffset();
+        GlStateManager.doPolygonOffset(1f, 1f);
         renderEarly(model, animatable, partialTicks, red, green, blue, alpha);
 
         renderLate(model, animatable, partialTicks, red, green, blue, alpha);
@@ -54,6 +56,8 @@ public interface IGeoRenderer<T> {
         }
 
         Tessellator.instance.draw();
+
+        GlStateManager.disablePolygonOffset();
 
         renderAfter(model, animatable, partialTicks, red, green, blue, alpha);
         //GlStateManager.disableRescaleNormal();
