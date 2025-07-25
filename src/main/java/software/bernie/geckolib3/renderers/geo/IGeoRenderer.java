@@ -115,11 +115,20 @@ public interface IGeoRenderer<T> {
         MATRIX_STACK.rotate(cube);
         MATRIX_STACK.moveBackFromPivot(cube);
 
+        boolean flat = cube.size.x == 0 || cube.size.y == 0 || cube.size.z == 0;
+        Vector3f flatOffset = null;
+        if (flat) {
+            flatOffset = new Vector3f(0, 0, 0);
+        }
+
         for (GeoQuad quad : cube.quads) {
             if (quad == null) continue;
             Vector3f normal = new Vector3f(quad.normal.getX(), quad.normal.getY(), quad.normal.getZ());
 
             MATRIX_STACK.getNormalMatrix().transform(normal);
+            if (flat) {
+                flatOffset.set(normal).normalize().mul(0.001f);
+            }
 
             /*
              * Fix shading dark shading for flat cubes + compatibility wish Optifine shaders
@@ -139,11 +148,15 @@ public interface IGeoRenderer<T> {
                     1.0F);
 
                 MATRIX_STACK.getModelMatrix().transform(vector4f);
+                if (flat)
+                    vector4f.add(flatOffset.x, flatOffset.y, flatOffset.z);
                 builder.setColorRGBA_F(red, green, blue, alpha);
                 builder.setNormal(normal.x, normal.y, normal.z);
                 builder.addVertexWithUV(vector4f.x, vector4f.y, vector4f.z, vertex.textureU, vertex.textureV);
             }
         }
+
+        // no-op
     }
 
     /*
