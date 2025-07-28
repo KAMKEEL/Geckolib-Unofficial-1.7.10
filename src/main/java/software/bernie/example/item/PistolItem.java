@@ -45,13 +45,14 @@ public class PistolItem extends Item implements GeoItem {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player) {
         if (worldIn.isRemote) {
-            AnimationController<?> controller = GeckoLibUtil.getControllerForStack(this.factory, stack, controllerName);
+            AnimationController<?> controller = this.factory
+                .getOrCreateAnimationData(GeoItem.getOrAssignId(stack))
+                .getAnimationControllers().get(controllerName);
             if (controller.getAnimationState() == AnimationState.Stopped) {
                 controller.markNeedsReload();
                 controller.setAnimation(new AnimationBuilder().addAnimation("firing", false));
             }
         }
-        GeoItem.getOrAssignId(stack);
         return super.onItemRightClick(stack, worldIn, player);
     }
 }
