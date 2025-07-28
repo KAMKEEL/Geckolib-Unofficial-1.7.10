@@ -3,6 +3,7 @@ package software.bernie.example.registry;
 import net.minecraft.item.Item;
 import software.bernie.example.item.JackInTheBoxItem;
 import software.bernie.example.item.PotatoArmorItem;
+import software.bernie.example.item.PistolItem;
 
 public class ItemRegistry {
     public static JackInTheBoxItem JACK_IN_THE_BOX;
@@ -11,6 +12,8 @@ public class ItemRegistry {
     public static PotatoArmorItem POTATO_CHEST;
     public static PotatoArmorItem POTATO_LEGGINGS;
     public static PotatoArmorItem POTATO_BOOTS;
+
+    public static PistolItem PISTOL_ITEM;
 
     public static Item BOTARIUM;
     public static Item FERTILIZER;

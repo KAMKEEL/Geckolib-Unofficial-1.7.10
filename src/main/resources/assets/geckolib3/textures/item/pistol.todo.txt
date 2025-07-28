@@ -1,0 +1,3 @@
+Download `pistol.png` from the modern GeckoLib repository (branch `1.19`):
+https://raw.githubusercontent.com/bernie-g/geckolib/1.19/Forge/src/main/resources/assets/geckolib3/textures/item/pistol.png
+Place it in the same folder as this file and remove this todo.

@@ -16,6 +16,7 @@ import software.bernie.example.entity.GeoExampleEntityLayer;
 import software.bernie.example.entity.GeoNpcEntity;
 import software.bernie.example.item.JackInTheBoxItem;
 import software.bernie.example.item.PotatoArmorItem;
+import software.bernie.example.item.PistolItem;
 import software.bernie.example.registry.BlockRegistry;
 import software.bernie.example.registry.ItemRegistry;
 
@@ -60,6 +61,8 @@ public class CommonListener {
             new PotatoArmorItem(ItemArmor.ArmorMaterial.DIAMOND, 0, 2), "potato_leggings");
         ItemRegistry.POTATO_BOOTS = registerItem(
             new PotatoArmorItem(ItemArmor.ArmorMaterial.DIAMOND, 0, 3), "potato_boots");
+
+        ItemRegistry.PISTOL_ITEM = registerItem(new PistolItem(), "pistol");
     }
 
     private static <T extends Item> T registerItem(T item, String name) {
