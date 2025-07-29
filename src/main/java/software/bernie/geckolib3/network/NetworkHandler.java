@@ -15,6 +15,8 @@ public class NetworkHandler {
         wrapper.registerMessage(PacketRemoveModel.class, PacketRemoveModel.class, 1, Side.CLIENT);
         wrapper.registerMessage(PacketSendAnimation.class, PacketSendAnimation.class, 2, Side.CLIENT);
         wrapper.registerMessage(PacketRemoveAnimation.class, PacketRemoveAnimation.class, 3, Side.CLIENT);
+        wrapper.registerMessage(PacketSyncAnimation.class, PacketSyncAnimation.class, 4, Side.CLIENT);
+        GeckoLibNetwork.registerMessages();
     }
 
     public static void sendToPlayer(IMessage message, EntityPlayer player) {

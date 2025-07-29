@@ -21,4 +21,9 @@ public class GeckoLibUtil {
                                                             String controllerName) {
         return factory.getOrCreateAnimationData(getIDFromStack(stack)).getAnimationControllers().get(controllerName);
     }
+
+    @SuppressWarnings("rawtypes")
+    public static AnimationController getControllerForID(AnimationFactory factory, int id, String controllerName) {
+        return factory.getOrCreateAnimationData(id).getAnimationControllers().get(controllerName);
+    }
 }

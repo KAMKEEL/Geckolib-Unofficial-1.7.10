@@ -26,7 +26,7 @@ public class PistolRenderer extends GeoItemRenderer<PistolItem> {
                     break;
                 case EQUIPPED:
                     GL11.glTranslatef(0, -1f / 16f, -0.25f / 16f);
-                    GL11.glScalef(0.5f, 0.5f, 0.5f);
+                    GL11.glScalef(0.3f, 0.3f, 0.3f);
                     break;
                 case INVENTORY:
                     GL11.glTranslatef(-0.25f / 16f, -1.25f / 16f, 0);

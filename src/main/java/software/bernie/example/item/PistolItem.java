@@ -13,20 +13,25 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoItem;
+import software.bernie.geckolib3.network.GeckoLibNetwork;
+import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 /**
  * Simplified example based on the modern GeckoLib pistol item.
  */
-public class PistolItem extends Item implements GeoItem {
+public class PistolItem extends Item implements GeoItem, ISyncable {
     public AnimationFactory factory = new AnimationFactory(this);
     private String controllerName = "controller";
+    public static final int ANIM_FIRE = 0;
 
     public PistolItem() {
         super();
         this.setMaxStackSize(1);
+        this.setMaxDamage(201);
         this.setCreativeTab(GeckoLibMod.getGeckolibItemGroup());
         this.setFull3D();
+        GeckoLibNetwork.registerSyncable(this);
     }
 
     private <P extends Item & GeoItem> PlayState predicate(AnimationEvent<P> event) {
@@ -46,15 +51,20 @@ public class PistolItem extends Item implements GeoItem {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player) {
-        if (worldIn.isRemote) {
-            AnimationController<?> controller = this.factory
-                .getOrCreateAnimationData(GeoItem.getOrAssignId(stack))
-                .getAnimationControllers().get(controllerName);
+        if (!worldIn.isRemote) {
+            GeckoLibNetwork.syncAnimationToAll(this, GeoItem.getOrAssignId(stack), ANIM_FIRE);
+        }
+        return super.onItemRightClick(stack, worldIn, player);
+    }
+
+    @Override
+    public void onAnimationSync(int id, int state) {
+        if (state == ANIM_FIRE) {
+            AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, id, controllerName);
             if (controller.getAnimationState() == AnimationState.Stopped) {
                 controller.markNeedsReload();
                 controller.setAnimation(new AnimationBuilder().addAnimation("firing", false));
             }
         }
-        return super.onItemRightClick(stack, worldIn, player);
     }
 }
