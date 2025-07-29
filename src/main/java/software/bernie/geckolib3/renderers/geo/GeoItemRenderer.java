@@ -97,6 +97,7 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
 
             if (var1 == ItemRenderType.INVENTORY) {
                 GL11.glTranslated(-1, -1, 0);
+                GL11.glRotatef(90, 0, 1, 0);
             }
             if (var1 != ItemRenderType.EQUIPPED_FIRST_PERSON) {
                 GL11.glTranslated(0, -0.5, 0);
@@ -184,6 +185,7 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
 
         Minecraft.getMinecraft().renderEngine.bindTexture(getTextureLocation(animatable));
         Color renderColor = getRenderColor(animatable, 0f);
+        GL11.glRotatef(90, 0, 1, 0);
         render(model, animatable, 0, (float) renderColor.getRed() / 255f, (float) renderColor.getGreen() / 255f,
             (float) renderColor.getBlue() / 255f, (float) renderColor.getAlpha() / 255);
         } catch (Exception e) {
