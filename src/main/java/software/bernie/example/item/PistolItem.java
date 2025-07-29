@@ -34,7 +34,8 @@ public class PistolItem extends Item implements GeoItem {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<PistolItem>(this, controllerName, 20, this::predicate));
+        // Update every tick so the firing animation triggers immediately
+        data.addAnimationController(new AnimationController<PistolItem>(this, controllerName, 1, this::predicate));
     }
 
     @Override
