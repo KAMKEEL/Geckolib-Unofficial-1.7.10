@@ -22,11 +22,10 @@ public class PistolRenderer extends GeoItemRenderer<PistolItem> {
         try {
             switch (type) {
                 case EQUIPPED_FIRST_PERSON:
-                    GL11.glRotatef(180, 0, 1, 0);
-                    GL11.glTranslatef(-9.5f / 16f, -6.75f / 16f, -8.75f / 16f);
+                    // Match first-person transform from the modern item model
+                    GL11.glTranslatef(-8.5f / 16f, -6.75f / 16f, -8.75f / 16f);
                     break;
                 case EQUIPPED:
-                    GL11.glRotatef(180, 0, 1, 0);
                     GL11.glTranslatef(0, -1f / 16f, -0.25f / 16f);
                     GL11.glScalef(0.3f, 0.3f, 0.3f);
                     break;
@@ -38,7 +37,6 @@ public class PistolRenderer extends GeoItemRenderer<PistolItem> {
                     GL11.glScalef(0.7f, 0.7f, 0.7f);
                     break;
                 case ENTITY:
-                    GL11.glRotatef(180, 0, 1, 0);
                     GL11.glScalef(0.5f, 0.5f, 0.5f);
                     break;
                 default:
