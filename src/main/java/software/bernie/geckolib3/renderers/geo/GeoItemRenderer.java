@@ -96,12 +96,13 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
             }
 
             if (var1 == ItemRenderType.INVENTORY) {
-                GL11.glTranslated(-1, -1, 0);
-                GL11.glRotatef(90, 0, 1, 0);
+                GL11.glTranslated(-1, -1, 0); // TODO: tweak inventory offset
+                GL11.glRotatef(90, 0, 1, 0); // TODO: verify default rotation
             }
             if (var1 != ItemRenderType.EQUIPPED_FIRST_PERSON) {
-                GL11.glTranslated(0, -0.5, 0);
+                GL11.glTranslated(0, -0.5, 0); // TODO: adjust vertical offset
             }
+            // TODO: change scale if models appear too large or small
             GL11.glScalef(this.scaleWidth, this.scaleHeight, this.scaleWidth);
             if (var1 == ItemRenderType.ENTITY) {
 //            Matrix4f matrix4f;
@@ -185,6 +186,7 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
 
         Minecraft.getMinecraft().renderEngine.bindTexture(getTextureLocation(animatable));
         Color renderColor = getRenderColor(animatable, 0f);
+        // TODO: confirm this matches the default item orientation
         GL11.glRotatef(90, 0, 1, 0);
         render(model, animatable, 0, (float) renderColor.getRed() / 255f, (float) renderColor.getGreen() / 255f,
             (float) renderColor.getBlue() / 255f, (float) renderColor.getAlpha() / 255);
