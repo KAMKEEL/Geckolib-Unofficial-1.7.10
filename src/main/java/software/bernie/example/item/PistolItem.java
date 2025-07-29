@@ -26,6 +26,7 @@ public class PistolItem extends Item implements GeoItem {
         super();
         this.setMaxStackSize(1);
         this.setCreativeTab(GeckoLibMod.getGeckolibItemGroup());
+        this.setFull3D();
     }
 
     private <P extends Item & GeoItem> PlayState predicate(AnimationEvent<P> event) {
