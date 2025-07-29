@@ -3,6 +3,7 @@ package software.bernie.geckolib3.renderers.geo;
 import com.eliotlash.mclib.utils.MatrixUtils;
 import net.geckominecraft.client.renderer.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,7 @@ import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.example.config.ConfigHandler;
+import software.bernie.geckolib3.item.GeoItem;
 
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Matrix4f;
@@ -44,6 +46,10 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
     protected AnimatedGeoModel<T> modelProvider;
     protected ItemStack currentItemStack;
 
+    protected float scaleWidth = 1.0f;
+    protected float scaleHeight = 1.0f;
+    protected boolean useEntityGuiLighting = false;
+
     public GeoItemRenderer(AnimatedGeoModel<T> modelProvider) {
         this.modelProvider = modelProvider;
     }
@@ -57,19 +63,47 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
         return modelProvider;
     }
 
+    /**
+     * Enable alternate lighting when rendering in inventories.
+     */
+    public GeoItemRenderer<T> useAlternateGuiLighting() {
+        this.useEntityGuiLighting = true;
+        return this;
+    }
+
+    /**
+     * Apply a uniform scale to the rendered item model.
+     */
+    public GeoItemRenderer<T> withScale(float scale) {
+        return withScale(scale, scale);
+    }
+
+    /**
+     * Apply separate width/height scale to the rendered item model.
+     */
+    public GeoItemRenderer<T> withScale(float width, float height) {
+        this.scaleWidth = width;
+        this.scaleHeight = height;
+        return this;
+    }
+
     @Override
     public void renderItem(ItemRenderType var1, ItemStack itemStack, Object... var3) {
         GL11.glPushMatrix();
         try {
+            if (var1 == ItemRenderType.INVENTORY && this.useEntityGuiLighting) {
+                RenderHelper.disableStandardItemLighting();
+            }
 
             if (var1 == ItemRenderType.INVENTORY) {
-                GL11.glTranslated(-1, -1, 0);
-                GL11.glRotatef(90, 0, 1, 0);
-
+                GL11.glTranslated(-1, -1, 0); // TODO: tweak inventory offset
+                GL11.glRotatef(90, 0, 1, 0); // TODO: verify default rotation
             }
             if (var1 != ItemRenderType.EQUIPPED_FIRST_PERSON) {
-                GL11.glTranslated(0, -0.5, 0);
+                GL11.glTranslated(0, -0.5, 0); // TODO: adjust vertical offset
             }
+            // TODO: change scale if models appear too large or small
+            GL11.glScalef(this.scaleWidth, this.scaleHeight, this.scaleWidth);
             if (var1 == ItemRenderType.ENTITY) {
 //            Matrix4f matrix4f;
 //            PositionUtils.setInitialWorldPos();
@@ -83,6 +117,9 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
                 e.printStackTrace();
             }
         } finally {
+            if (var1 == ItemRenderType.INVENTORY && this.useEntityGuiLighting) {
+                RenderHelper.enableStandardItemLighting();
+            }
             GL11.glPopMatrix();
         }
     }
@@ -149,6 +186,7 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
 
         Minecraft.getMinecraft().renderEngine.bindTexture(getTextureLocation(animatable));
         Color renderColor = getRenderColor(animatable, 0f);
+        // TODO: confirm this matches the default item orientation
         GL11.glRotatef(90, 0, 1, 0);
         render(model, animatable, 0, (float) renderColor.getRed() / 255f, (float) renderColor.getGreen() / 255f,
             (float) renderColor.getBlue() / 255f, (float) renderColor.getAlpha() / 255);
@@ -168,6 +206,9 @@ public abstract class GeoItemRenderer<T extends Item & IAnimatable> implements I
 
     @Override
     public Integer getUniqueID(T animatable) {
+        if (animatable instanceof GeoItem && this.currentItemStack != null) {
+            return GeoItem.getOrAssignId(this.currentItemStack);
+        }
         return Objects.hash(currentItemStack.getItem(), currentItemStack.stackSize,
             currentItemStack.hasTagCompound() ? currentItemStack.getTagCompound().toString() : 1);
     }
