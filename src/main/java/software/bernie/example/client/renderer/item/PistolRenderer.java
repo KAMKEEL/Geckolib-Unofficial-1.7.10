@@ -23,9 +23,11 @@ public class PistolRenderer extends GeoItemRenderer<PistolItem> {
             switch (type) {
                 case EQUIPPED_FIRST_PERSON:
                     GL11.glTranslatef(-9.5f / 16f, -6.75f / 16f, -8.75f / 16f);
+                    GL11.glRotatef(180, 0, 1, 0);
                     break;
                 case EQUIPPED:
                     GL11.glTranslatef(0, -1f / 16f, -0.25f / 16f);
+                    GL11.glRotatef(180, 0, 1, 0);
                     GL11.glScalef(0.3f, 0.3f, 0.3f);
                     break;
                 case INVENTORY:
